@@ -342,14 +342,15 @@ int sccp_pbx_hangup(sccp_channel_t * channel)
 	AUTO_RELEASE sccp_line_t *l = sccp_line_retain(c->line);
 
 #ifdef CS_SCCP_CONFERENCE
-	if (c && c->conference) {
-		c->conference = sccp_refcount_release(c->conference, __FILE__, __LINE__, __PRETTY_FUNCTION__);
+	if (d && c){
+		if (d->conference && d->conference == c->conference) {
+			d->conference = sccp_refcount_release(d->conference, __FILE__, __LINE__, __PRETTY_FUNCTION__);
+		}
+		if (c->conference) {
+			c->conference = sccp_refcount_release(c->conference, __FILE__, __LINE__, __PRETTY_FUNCTION__);
+		}
 	}
-	if (d && d->conference) {
-		d->conference = sccp_refcount_release(d->conference, __FILE__, __LINE__, __PRETTY_FUNCTION__);
-	}
-#endif														// CS_SCCP_CONFERENCE
-
+#endif
 	sccp_channel_closeAllMediaTransmitAndReceive(d, c);
 
 	// removing scheduled dialing
