@@ -1026,6 +1026,10 @@ sccp_conference_participant_t *sccp_conference_participant_findByPBXChannel(sccp
  */
 void sccp_conference_show_list(sccp_conference_t * conference, sccp_channel_t * c)
 {
+	pbx_log(LOG_WARNING, "SCCPCONF: Dirty hack, conflist show disabled for all cases because it is buggy\n");
+	return;
+
+
 	int use_icon = 0;
 
 	if (!conference) {
